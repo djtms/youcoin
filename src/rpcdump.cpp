@@ -27,7 +27,8 @@ std::string static EncodeDumpTime(int64 nTime) {
 }
 
 int64 static DecodeDumpTime(const std::string &str) {
-    static const boost::posix_time::time_input_facet facet("%Y-%m-%dT%H:%M:%SZ");
+    static boost::posix_time::time_input_facet facet("%Y-%m-%dT%H:%M:%SZ");
+    //static const boost::posix_time::time_input_facet facet("%Y-%m-%dT%H:%M:%SZ");
     static const boost::posix_time::ptime epoch = boost::posix_time::from_time_t(0);
     const std::locale loc(std::locale::classic(), &facet);
     std::istringstream iss(str);
@@ -56,7 +57,7 @@ std::string DecodeDumpString(const std::string &str) {
     for (unsigned int pos = 0; pos < str.length(); pos++) {
         unsigned char c = str[pos];
         if (c == '%' && pos+2 < str.length()) {
-            c = (((str[pos+1]>>6)*9+((str[pos+1]-'0')&15)) << 4) | 
+            c = (((str[pos+1]>>6)*9+((str[pos+1]-'0')&15)) << 4) |
                 ((str[pos+2]>>6)*9+((str[pos+2]-'0')&15));
             pos += 2;
         }
